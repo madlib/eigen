@@ -226,7 +226,7 @@ $(document).ready(function() {
       expandNode(global_navtree_object, global_navtree_object.node.children[0].children[0], true, true);
 
       // Hide the root node "MADlib"
-      $(document.getElementsByClassName('index.html')[0]).parent().parent().css({display:"none"});
+      // $(document.getElementsByClassName('index.html')[0]).parent().parent().css({display:"none"});
 
       // Hide the "modules" node
       $(document.getElementsByClassName('modules.html')[0]).parent().parent().css({display:"none"});
