@@ -1,3 +1,4 @@
+var arrowRight = '&#9658;';
 
 // generate a table of contents in the side-nav based on the h1/h2 tags of the current page.
 function generate_autotoc() {
@@ -91,10 +92,9 @@ function initNavTree(toroot,relpath)
   o.node.relpath = relpath;
   o.node.expanded = false;
   o.node.isLast = true;
-  o.node.plus_img = document.createElement("img");
-  o.node.plus_img.src = relpath+"arrowright.png";
-  o.node.plus_img.width = 16;
-  o.node.plus_img.height = 22;
+  o.node.plus_img = document.createElement("span");
+  o.node.plus_img.className = 'arrow';
+  o.node.plus_img.innerHTML = arrowRight;
 
   if (localStorageSupported()) {
     var navSync = $('#nav-sync');
@@ -155,19 +155,19 @@ function createIndent(o,domNode,node,level)
   var level=-2; // <- we replaced level=-1 by level=-2
   var n = node;
   while (n.parentNode) { level++; n=n.parentNode; }
-  var imgNode = document.createElement("img");
-  imgNode.style.paddingLeft=(16*(level)).toString()+'px';
-  imgNode.width  = 16;
-  imgNode.height = 22;
-  imgNode.border = 0;
   if (checkChildrenData(node)) { // <- we modified this line to use checkChildrenData(node) instead of node.childrenData
+    var imgNode = document.createElement("span");
+    imgNode.className = 'arrow';
+    imgNode.style.paddingLeft=(16*level).toString()+'px';
+    imgNode.innerHTML = arrowRight;
+
     node.plus_img = imgNode;
     node.expandToggle = document.createElement("a");
     node.expandToggle.href = "javascript:void(0)";
     node.expandToggle.onclick = function() {
       if (node.expanded) {
         $(node.getChildrenUL()).slideUp("fast");
-        node.plus_img.src = node.relpath+"arrowright.png";
+        node.plus_img.innerHTML = arrowRight;
         node.expanded = false;
       } else {
         expandNode(o, node, false, false);
@@ -175,14 +175,12 @@ function createIndent(o,domNode,node,level)
     }
     node.expandToggle.appendChild(imgNode);
     domNode.appendChild(node.expandToggle);
-    imgNode.src = node.relpath+"arrowright.png";
   } else {
-    var span = document.createElement("span");
-    span.style.display = 'inline-block';
-    span.style.width   = 16*(level+1)+'px';
-    span.style.height  = '22px';
-    span.innerHTML = '&#160;';
-    domNode.appendChild(span);
+      var span = document.createElement("span");
+      span.className = 'arrow';
+      span.style.width   = 16*(level+1)+'px';
+      span.innerHTML = '&#160;';
+      domNode.appendChild(span);
   }
 }
 
